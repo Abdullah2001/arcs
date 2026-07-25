@@ -1,42 +1,62 @@
 const services = [
   {
     number: "01",
-    title: "Renovatie",
-    text: "Van gedateerd naar helemaal van nu. We vernieuwen woningen doordacht, degelijk en met oog voor wat er al staat.",
+    title: "Stucwerk",
+    text: "Binnenstucwerk, pleisterwerk en het strak afwerken of herstellen van muren en plafonds.",
   },
   {
     number: "02",
-    title: "Aan- & uitbouw",
-    text: "Meer licht, leefruimte en woningwaarde. Van fundering tot afwerking geregeld door één betrokken bouwteam.",
+    title: "Schilderwerk",
+    text: "Binnen- en buitenschilderwerk, sauswerk en een zorgvuldige voorbehandeling van iedere ondergrond.",
   },
   {
     number: "03",
-    title: "Verbouw",
-    text: "Een nieuwe indeling, keuken, badkamer of complete verdieping. Slim gepland en netjes uitgevoerd.",
+    title: "Tegelwerk",
+    text: "Wand- en vloertegels voor badkamers, toiletten en keukens, inclusief voegen en kitten.",
   },
   {
     number: "04",
-    title: "Onderhoud",
-    text: "Vakkundig herstel en periodiek onderhoud voor particuliere woningen en kleinschalig vastgoed.",
+    title: "Vloerwerk",
+    text: "Laminaat, PVC, plinten, egaliseren en het vakkundig verwijderen van bestaande vloeren.",
+  },
+  {
+    number: "05",
+    title: "Montagewerk",
+    text: "Montage van binnendeuren, kozijnen, kasten, vensterbanken en diverse aftimmeringen.",
+  },
+  {
+    number: "06",
+    title: "Keukenwerk",
+    text: "Van demontage tot keukenmontage, werkbladen, kasten, tegelwerk en complete afwerking.",
+  },
+  {
+    number: "07",
+    title: "Sloopwerk",
+    text: "Kleine sloopwerkzaamheden, het verwijderen van keukens, badkamers en vloeren plus afvalafvoer.",
+  },
+  {
+    number: "08",
+    title: "Complete renovaties",
+    text: "Woningrenovaties en complete binnenafwerking met één aanspreekpunt voor alle werkzaamheden.",
   },
 ];
 
 const projects = [
   {
-    title: "Moderne aanbouw",
-    location: "Vrijstaande woning · 14 weken",
+    title: "Complete woonkamer renovatie",
+    location: "Eindhoven · binnenafwerking",
     image: "/project-aanbouw.jpg",
     className: "project-wide",
   },
   {
-    title: "Totaalrenovatie",
-    location: "Jaren 30-woning · 18 weken",
+    title: "Badkamerrenovatie",
+    location: "Veldhoven · tegel- & montagewerk",
     image: "/project-renovatie.jpg",
     className: "",
   },
   {
-    title: "Open leefverdieping",
-    location: "Stadswoning · 10 weken",
+    title: "Stuc- en schilderwerk",
+    location: "Helmond · wanden & plafonds",
     image: "/project-interieur.jpg",
     className: "",
   },
@@ -45,23 +65,33 @@ const projects = [
 const steps = [
   {
     number: "01",
-    title: "Kennismaken",
-    text: "We luisteren naar je plannen en bekijken de situatie op locatie.",
+    title: "Kennismaking en aanvraag",
+    text: "Je vertelt wat er moet gebeuren en wij denken direct praktisch met je mee.",
   },
   {
     number: "02",
-    title: "Helder voorstel",
-    text: "Je krijgt een duidelijke offerte, planning en vaste contactpersoon.",
+    title: "Opname op locatie",
+    text: "We bekijken de situatie, meten het werk in en bespreken de mogelijkheden.",
   },
   {
     number: "03",
-    title: "Samen bouwen",
-    text: "We houden je op de hoogte en stemmen belangrijke keuzes tijdig af.",
+    title: "Duidelijke offerte",
+    text: "Je ontvangt een transparant voorstel met heldere afspraken over het werk.",
   },
   {
     number: "04",
-    title: "Netjes opleveren",
-    text: "We lopen alles samen na en laten de bouwplaats verzorgd achter.",
+    title: "Planning en voorbereiding",
+    text: "Materialen, vakmensen en werkzaamheden worden zorgvuldig op elkaar afgestemd.",
+  },
+  {
+    number: "05",
+    title: "Vakkundige uitvoering",
+    text: "Eén aanspreekpunt houdt je op de hoogte terwijl ons team het werk uitvoert.",
+  },
+  {
+    number: "06",
+    title: "Controle en oplevering",
+    text: "We lopen alles samen na en laten de werkplek netjes en verzorgd achter.",
   },
 ];
 
@@ -74,7 +104,7 @@ export default function Home() {
 
       <div className="topbar">
         <div className="container topbar-inner">
-          <p>Vakwerk voor woningen en kleinschalig vastgoed</p>
+          <p>Renovatie &amp; dienstverlening in Eindhoven en omgeving</p>
           <p className="topbar-location">
             <span className="status-dot" aria-hidden="true" />
             Beschikbaar voor nieuwe projecten
@@ -84,13 +114,12 @@ export default function Home() {
 
       <header className="site-header">
         <div className="container header-inner">
-          <a className="brand" href="#" aria-label="Bouwkracht, naar boven">
-            <span className="brand-mark" aria-hidden="true">
-              BK
-            </span>
-            <span className="brand-name">
-              BOUW<span>KRACHT</span>
-            </span>
+          <a className="brand" href="#" aria-label="AR Civil Solutions, naar boven">
+            <img
+              className="brand-logo"
+              src="/images/brand/logo-horizontal.png"
+              alt="AR Civil Solutions"
+            />
           </a>
 
           <nav className="desktop-nav" aria-label="Hoofdnavigatie">
@@ -124,25 +153,25 @@ export default function Home() {
           <div className="container hero-grid">
             <div className="hero-copy">
               <p className="eyebrow">
-                <span aria-hidden="true">—</span> Bouwbedrijf voor renovatie &amp;
-                verbouw
+                <span aria-hidden="true">—</span> Renovatiebedrijf in Eindhoven
+                en omgeving
               </p>
               <h1>
-                Gebouwd op
+                Van uitdaging
                 <br />
-                <em>afspraak.</em>
+                naar <em>oplossing.</em>
               </h1>
               <p className="hero-intro">
-                Van eerste schets tot laatste plint. Wij maken van jouw
-                bouwplannen een degelijk resultaat waar je elke dag plezier van
-                hebt.
+                AR Civil Solutions verzorgt stucwerk, schilderwerk, tegelwerk,
+                vloeren, montage, keukenwerk, sloopwerk en complete
+                binnenrenovaties voor particulieren en bedrijven.
               </p>
               <div className="hero-actions">
                 <a className="button" href="#contact">
-                  Bespreek je project <span aria-hidden="true">↗</span>
+                  Gratis offerte aanvragen <span aria-hidden="true">↗</span>
                 </a>
-                <a className="text-link" href="#projecten">
-                  Bekijk ons werk <span aria-hidden="true">↓</span>
+                <a className="text-link" href="#diensten">
+                  Bekijk onze diensten <span aria-hidden="true">↓</span>
                 </a>
               </div>
             </div>
@@ -156,16 +185,16 @@ export default function Home() {
                 <div className="image-label">
                   <span className="image-label-number">01</span>
                   <span>
-                    Degelijk gebouwd
+                    Building stronger
                     <br />
-                    Zorgvuldig afgewerkt
+                    futures
                   </span>
                 </div>
               </div>
-              <div className="hero-stamp" aria-label="Bouwen met aandacht">
-                <span>BOUWEN MET</span>
+              <div className="hero-stamp" aria-label="AR Civil Solutions">
+                <span>AR CIVIL</span>
                 <strong>+</strong>
-                <span>AANDACHT</span>
+                <span>SOLUTIONS</span>
               </div>
             </div>
           </div>
@@ -182,25 +211,24 @@ export default function Home() {
             <div>
               <span className="value-number">02</span>
               <p>
-                Heldere offerte
-                <br />
-                en planning
+                Duidelijke
+                <br />afspraken
               </p>
             </div>
             <div>
               <span className="value-number">03</span>
               <p>
-                Vakmensen met
+                Praktische
                 <br />
-                oog voor detail
+                oplossingen
               </p>
             </div>
             <div>
               <span className="value-number">04</span>
               <p>
-                Netjes werken
+                Netjes en veilig
                 <br />
-                en opleveren
+                werken
               </p>
             </div>
           </div>
@@ -211,17 +239,18 @@ export default function Home() {
             <div className="section-heading light-heading">
               <div>
                 <p className="eyebrow">
-                  <span aria-hidden="true">—</span> Wat we bouwen
+                  <span aria-hidden="true">—</span> Alles onder één dak
                 </p>
                 <h2>
-                  Grootse plannen.
+                  Alles voor
                   <br />
-                  <em>Degelijk uitgevoerd.</em>
+                  jouw <em>renovatie.</em>
                 </h2>
               </div>
               <p className="section-intro">
-                Korte lijnen, een realistische planning en vakwerk dat klopt.
-                Daar kun je tijdens én na de bouw op rekenen.
+                Meerdere werkzaamheden combineren zonder verschillende
+                aannemers te hoeven aansturen. AR Civil Solutions coördineert
+                het werk van begin tot eind.
               </p>
             </div>
 
@@ -249,12 +278,12 @@ export default function Home() {
             <div className="section-heading project-heading">
               <div>
                 <p className="eyebrow">
-                  <span aria-hidden="true">—</span> Uitgelicht werk
+                  <span aria-hidden="true">—</span> Voorbeeldprojecten
                 </p>
                 <h2>
-                  Werk dat voor
+                  Vakkundig werk.
                   <br />
-                  <em>zichzelf spreekt.</em>
+                  <em>Netjes afgewerkt.</em>
                 </h2>
               </div>
               <a className="text-link" href="#contact">
@@ -292,14 +321,14 @@ export default function Home() {
                   <span aria-hidden="true">—</span> Zo werken wij
                 </p>
                 <h2>
-                  Geen verrassingen.
+                  Duidelijk proces.
                   <br />
-                  <em>Wel vooruitgang.</em>
+                  <em>Goed resultaat.</em>
                 </h2>
                 <p>
-                  Verbouwen heeft impact. Daarom weet je bij ons vooraf waar je
-                  aan toe bent en blijft de communicatie helder gedurende het
-                  hele project.
+                  Je weet vooraf waar je aan toe bent. Van de eerste opname tot
+                  de oplevering houden we de communicatie helder en de
+                  uitvoering overzichtelijk.
                 </p>
                 <a className="button button-light" href="#contact">
                   Plan een kennismaking <span aria-hidden="true">↗</span>
@@ -324,17 +353,17 @@ export default function Home() {
         <section className="testimonial">
           <div className="container testimonial-inner">
             <p className="eyebrow dark-eyebrow">
-              <span aria-hidden="true">—</span> Klant aan het woord
+              <span aria-hidden="true">—</span> Voorbeeldbeoordeling
             </p>
             <blockquote>
-              “Vanaf het eerste gesprek was het duidelijk: deze mensen denken
-              mee. De planning klopte, de communicatie was prettig en het
-              eindresultaat is nog mooier dan we voor ogen hadden.”
+              “Duidelijke afspraken, prettig contact en een vakkundige
+              afwerking. Alles werd netjes uitgevoerd en de werkplek werd
+              verzorgd achtergelaten.”
             </blockquote>
             <div className="testimonial-footer">
               <p>
-                <strong>Familie De Jong</strong>
-                <span>Renovatie &amp; uitbouw</span>
+                <strong>Tijdelijke voorbeeldtekst</strong>
+                <span>Wordt vervangen door een echte klantbeoordeling</span>
               </p>
               <div className="stars" aria-label="5 van 5 sterren">
                 ★ ★ ★ ★ ★
@@ -355,21 +384,21 @@ export default function Home() {
                 <em>je plan.</em>
               </h2>
               <p>
-                Deel kort wat je wilt bouwen of verbouwen. We nemen snel contact
-                op om je project en de mogelijkheden te bespreken.
+                Deel kort welke werkzaamheden je wilt laten uitvoeren. We nemen
+                contact op om je project en de mogelijkheden te bespreken.
               </p>
               <div className="contact-details">
-                <a href="tel:+31612345678">
+                <a href="tel:+31600000000">
                   <span>Bel</span>
-                  06 12 34 56 78
+                  +31 6 00000000
                 </a>
-                <a href="mailto:info@jouwbedrijf.nl">
+                <a href="mailto:info@arcivilsolutions.nl">
                   <span>Mail</span>
-                  info@jouwbedrijf.nl
+                  info@arcivilsolutions.nl
                 </a>
                 <p>
                   <span>Werkgebied</span>
-                  Jouw regio &amp; omgeving
+                  Eindhoven &amp; omgeving
                 </p>
               </div>
             </div>
@@ -377,7 +406,7 @@ export default function Home() {
             <form
               className="contact-form"
               id="contact-form"
-              action="mailto:info@jouwbedrijf.nl"
+              action="mailto:info@arcivilsolutions.nl"
               method="post"
               encType="text/plain"
             >
@@ -388,7 +417,7 @@ export default function Home() {
                 </label>
                 <label>
                   Telefoon
-                  <input type="tel" name="telefoon" placeholder="06 12 34 56 78" required />
+                  <input type="tel" name="telefoon" placeholder="+31 6 00000000" required />
                 </label>
               </div>
               <div className="form-row">
@@ -402,10 +431,14 @@ export default function Home() {
                     <option value="" disabled>
                       Maak een keuze
                     </option>
-                    <option>Renovatie</option>
-                    <option>Aan- of uitbouw</option>
-                    <option>Verbouw</option>
-                    <option>Onderhoud</option>
+                    <option>Stucwerk</option>
+                    <option>Schilderwerk</option>
+                    <option>Tegelwerk</option>
+                    <option>Vloerwerk</option>
+                    <option>Montagewerk</option>
+                    <option>Keukenwerk</option>
+                    <option>Sloopwerk</option>
+                    <option>Complete renovatie</option>
                     <option>Anders</option>
                   </select>
                 </label>
@@ -431,24 +464,34 @@ export default function Home() {
         </section>
       </main>
 
+      <a
+        className="whatsapp-button"
+        href="https://wa.me/31600000000?text=Hallo%20AR%20Civil%20Solutions%2C%20ik%20wil%20graag%20informatie%20of%20een%20offerte%20aanvragen."
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Neem contact op met AR Civil Solutions via WhatsApp"
+      >
+        <span aria-hidden="true">WA</span>
+        WhatsApp
+      </a>
+
       <footer>
         <div className="container footer-top">
-          <a className="brand footer-brand" href="#" aria-label="Bouwkracht, naar boven">
-            <span className="brand-mark" aria-hidden="true">
-              BK
-            </span>
-            <span className="brand-name">
-              BOUW<span>KRACHT</span>
-            </span>
+          <a className="brand footer-brand" href="#" aria-label="AR Civil Solutions, naar boven">
+            <img
+              className="brand-logo"
+              src="/images/brand/logo-horizontal.png"
+              alt="AR Civil Solutions"
+            />
           </a>
-          <p>Renovatie · Verbouw · Aanbouw · Onderhoud</p>
+          <p>Stucwerk · Schilderwerk · Tegelwerk · Complete renovaties</p>
           <a className="back-to-top" href="#">
             Naar boven <span aria-hidden="true">↑</span>
           </a>
         </div>
         <div className="container footer-bottom">
-          <p>© 2026 Bouwkracht. Alle rechten voorbehouden.</p>
-          <p>Websiteconcept voor jouw bouwbedrijf</p>
+          <p>© 2026 AR Civil Solutions. Alle rechten voorbehouden.</p>
+          <p>Van uitdaging naar oplossing</p>
           <a href="https://unsplash.com" target="_blank" rel="noreferrer">
             Beeld: Unsplash
           </a>

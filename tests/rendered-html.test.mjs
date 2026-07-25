@@ -22,15 +22,16 @@ async function render() {
   );
 }
 
-test("server-renders the Bouwkracht website", async () => {
+test("server-renders the AR Civil Solutions website", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
   assert.match(html, /<html lang="nl">/i);
-  assert.match(html, /<title>Bouwkracht \| Renovatie, verbouw en aanbouw<\/title>/i);
-  assert.match(html, /Gebouwd op/);
+  assert.match(html, /<title>AR Civil Solutions \| Renovatiebedrijf Eindhoven<\/title>/i);
+  assert.match(html, /Van uitdaging/);
+  assert.match(html, /AR Civil Solutions/);
   assert.match(html, /Offerte aanvragen/);
   assert.match(html, /id="diensten"/);
   assert.match(html, /id="projecten"/);
