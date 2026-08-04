@@ -1,3 +1,5 @@
+import { listProjectsWithFallback } from "@/db/projects";
+
 const services = [
   {
     number: "01",
@@ -41,27 +43,6 @@ const services = [
   },
 ];
 
-const projects = [
-  {
-    title: "Complete woonkamer renovatie",
-    location: "Eindhoven · binnenafwerking",
-    image: "/project-aanbouw.jpg",
-    className: "project-wide",
-  },
-  {
-    title: "Badkamerrenovatie",
-    location: "Veldhoven · tegel- & montagewerk",
-    image: "/project-renovatie.jpg",
-    className: "",
-  },
-  {
-    title: "Stuc- en schilderwerk",
-    location: "Helmond · wanden & plafonds",
-    image: "/project-interieur.jpg",
-    className: "",
-  },
-];
-
 const steps = [
   {
     number: "01",
@@ -95,7 +76,11 @@ const steps = [
   },
 ];
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const projects = await listProjectsWithFallback();
+
   return (
     <>
       <a className="skip-link" href="#inhoud">
@@ -292,13 +277,17 @@ export default function Home() {
             </div>
 
             <div className="project-grid">
-              {projects.map((project, index) => (
+              {projects.length === 0 ? (
+                <p className="project-empty">
+                  Nieuwe projecten en foto&apos;s worden binnenkort toegevoegd.
+                </p>
+              ) : projects.map((project, index) => (
                 <article
-                  className={`project-card ${project.className}`}
-                  key={project.title}
+                  className={`project-card ${index === 0 ? "project-wide" : ""}`}
+                  key={project.id}
                 >
                   <div className="project-image">
-                    <img src={project.image} alt={project.title} />
+                    <img src={project.imagePath} alt={project.title} />
                     <span className="project-index">
                       0{index + 1}
                     </span>

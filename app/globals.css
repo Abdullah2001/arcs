@@ -555,6 +555,15 @@ h2 em {
   gap: 58px 24px;
 }
 
+.project-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 68px 24px;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+  text-align: center;
+}
+
 .project-wide {
   grid-column: 1 / -1;
 }
