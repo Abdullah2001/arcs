@@ -293,34 +293,6 @@ h2 em {
   transform: scale(1.025);
 }
 
-.hero-stamp {
-  position: absolute;
-  top: 54px;
-  left: -43px;
-  width: 110px;
-  aspect-ratio: 1;
-  display: grid;
-  place-content: center;
-  gap: 3px;
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--white);
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.16);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 8px;
-  font-weight: 750;
-  letter-spacing: 0.11em;
-  text-align: center;
-}
-
-.hero-stamp strong {
-  color: var(--accent);
-  font-size: 25px;
-  font-weight: 400;
-  line-height: 0.8;
-}
-
 .value-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1037,12 +1009,6 @@ footer {
     margin-left: -18px;
   }
 
-  .hero-stamp {
-    top: -32px;
-    right: 26px;
-    left: auto;
-  }
-
   .value-strip {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1165,11 +1131,6 @@ footer {
   .hero-image-wrap img {
     min-height: 430px;
     height: 430px;
-  }
-
-  .hero-stamp {
-    right: 18px;
-    width: 94px;
   }
 
   .value-strip {

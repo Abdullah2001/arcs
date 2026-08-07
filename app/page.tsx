@@ -137,9 +137,8 @@ export default async function Home() {
                 naar <em>oplossing.</em>
               </h1>
               <p className="hero-intro">
-                Wij maken renovaties overzichtelijk met één aanspreekpunt,
-                duidelijke afspraken en een vakkundige uitvoering van begin
-                tot oplevering.
+                Van eerste idee tot strakke oplevering realiseren wij jouw
+                renovatie met aandacht, vakmanschap en heldere communicatie.
               </p>
               <div className="hero-actions">
                 <a className="button" href="#contact">
@@ -154,14 +153,9 @@ export default async function Home() {
             <div className="hero-media">
               <div className="hero-image-wrap">
                 <img
-                  src="/hero-team-ar-civil.png"
-                  alt="Professioneel team van een lokaal renovatiebedrijf"
+                  src="/hero-renovatie-interieur.png"
+                  alt="Licht gerenoveerd interieur tijdens de afwerkingsfase"
                 />
-              </div>
-              <div className="hero-stamp" aria-label="AR Civil Solutions">
-                <span>AR CIVIL</span>
-                <strong>+</strong>
-                <span>SOLUTIONS</span>
               </div>
             </div>
           </div>
