@@ -87,16 +87,6 @@ export default async function Home() {
         Ga naar de inhoud
       </a>
 
-      <div className="topbar">
-        <div className="container topbar-inner">
-          <p>Renovatie &amp; dienstverlening in Eindhoven en omgeving</p>
-          <p className="topbar-location">
-            <span className="status-dot" aria-hidden="true" />
-            Beschikbaar voor nieuwe projecten
-          </p>
-        </div>
-      </div>
-
       <header className="site-header">
         <div className="container header-inner">
           <a className="brand" href="#" aria-label="AR Civil Solutions, naar boven">
@@ -147,9 +137,9 @@ export default async function Home() {
                 naar <em>oplossing.</em>
               </h1>
               <p className="hero-intro">
-                AR Civil Solutions verzorgt stucwerk, schilderwerk, tegelwerk,
-                vloeren, montage, keukenwerk, sloopwerk en complete
-                binnenrenovaties voor particulieren en bedrijven.
+                Wij maken renovaties overzichtelijk met één aanspreekpunt,
+                duidelijke afspraken en een vakkundige uitvoering van begin
+                tot oplevering.
               </p>
               <div className="hero-actions">
                 <a className="button" href="#contact">
@@ -164,17 +154,9 @@ export default async function Home() {
             <div className="hero-media">
               <div className="hero-image-wrap">
                 <img
-                  src="/hero-bouw.jpg"
-                  alt="Vakmensen aan het werk op een bouwplaats"
+                  src="/hero-team-ar-civil.png"
+                  alt="Professioneel team van een lokaal renovatiebedrijf"
                 />
-                <div className="image-label">
-                  <span className="image-label-number">01</span>
-                  <span>
-                    Building stronger
-                    <br />
-                    futures
-                  </span>
-                </div>
               </div>
               <div className="hero-stamp" aria-label="AR Civil Solutions">
                 <span>AR CIVIL</span>

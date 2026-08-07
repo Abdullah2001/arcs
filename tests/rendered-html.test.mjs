@@ -35,9 +35,12 @@ test("server-renders the AR Civil Solutions website", async () => {
   assert.match(html, /<title>AR Civil Solutions \| Renovatiebedrijf Eindhoven<\/title>/i);
   assert.match(html, /Van uitdaging/);
   assert.match(html, /AR Civil Solutions/);
+  assert.match(html, /Wij maken renovaties overzichtelijk/);
   assert.match(html, /Offerte aanvragen/);
   assert.match(html, /id="diensten"/);
   assert.match(html, /id="projecten"/);
   assert.match(html, /id="contact"/);
+  assert.doesNotMatch(html, /Beschikbaar voor nieuwe projecten/);
+  assert.doesNotMatch(html, /Building stronger/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });
