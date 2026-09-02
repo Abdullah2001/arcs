@@ -37,11 +37,14 @@ test("server-renders the AR Civil Solutions website", async () => {
   assert.match(html, /AR Civil Solutions/);
   assert.match(html, /Van eerste idee tot strakke oplevering/);
   assert.match(html, /Offerte aanvragen/);
+  assert.match(html, /hero-renovatie-bouwplaats\.png/);
   assert.match(html, /id="diensten"/);
   assert.match(html, /id="projecten"/);
   assert.match(html, /id="contact"/);
   assert.doesNotMatch(html, /Beschikbaar voor nieuwe projecten/);
   assert.doesNotMatch(html, /Building stronger/);
   assert.doesNotMatch(html, /class="hero-stamp"/);
+  assert.doesNotMatch(html, /Voorbeeldbeoordeling|Tijdelijke voorbeeldtekst/);
+  assert.doesNotMatch(html, /action="mailto:/i);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });

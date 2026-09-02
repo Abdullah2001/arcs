@@ -1,4 +1,5 @@
 import { listProjectsWithFallback } from "@/db/projects";
+import OfferteForm from "./offerte-form";
 
 const services = [
   {
@@ -153,8 +154,8 @@ export default async function Home() {
             <div className="hero-media">
               <div className="hero-image-wrap">
                 <img
-                  src="/hero-renovatie-interieur.png"
-                  alt="Licht gerenoveerd interieur tijdens de afwerkingsfase"
+                  src="/hero-renovatie-bouwplaats.png"
+                  alt="Vakman tijdens de renovatie van een woning"
                 />
               </div>
             </div>
@@ -315,28 +316,6 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="testimonial">
-          <div className="container testimonial-inner">
-            <p className="eyebrow dark-eyebrow">
-              <span aria-hidden="true">—</span> Voorbeeldbeoordeling
-            </p>
-            <blockquote>
-              “Duidelijke afspraken, prettig contact en een vakkundige
-              afwerking. Alles werd netjes uitgevoerd en de werkplek werd
-              verzorgd achtergelaten.”
-            </blockquote>
-            <div className="testimonial-footer">
-              <p>
-                <strong>Tijdelijke voorbeeldtekst</strong>
-                <span>Wordt vervangen door een echte klantbeoordeling</span>
-              </p>
-              <div className="stars" aria-label="5 van 5 sterren">
-                ★ ★ ★ ★ ★
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section className="contact dark-section" id="contact">
           <div className="container contact-grid">
             <div className="contact-copy">
@@ -368,63 +347,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <form
-              className="contact-form"
-              id="contact-form"
-              action="mailto:info@arcivilsolutions.nl"
-              method="post"
-              encType="text/plain"
-            >
-              <div className="form-row">
-                <label>
-                  Naam
-                  <input type="text" name="naam" placeholder="Voor- en achternaam" required />
-                </label>
-                <label>
-                  Telefoon
-                  <input type="tel" name="telefoon" placeholder="+31 6 00000000" required />
-                </label>
-              </div>
-              <div className="form-row">
-                <label>
-                  E-mail
-                  <input type="email" name="email" placeholder="naam@email.nl" required />
-                </label>
-                <label>
-                  Type project
-                  <select name="project" defaultValue="">
-                    <option value="" disabled>
-                      Maak een keuze
-                    </option>
-                    <option>Stucwerk</option>
-                    <option>Schilderwerk</option>
-                    <option>Tegelwerk</option>
-                    <option>Vloerwerk</option>
-                    <option>Montagewerk</option>
-                    <option>Keukenwerk</option>
-                    <option>Sloopwerk</option>
-                    <option>Complete renovatie</option>
-                    <option>Anders</option>
-                  </select>
-                </label>
-              </div>
-              <label>
-                Vertel kort over je plan
-                <textarea
-                  name="bericht"
-                  rows={5}
-                  placeholder="Wat wil je laten doen en wanneer?"
-                  required
-                />
-              </label>
-              <button className="button form-button" type="submit">
-                Verstuur aanvraag <span aria-hidden="true">↗</span>
-              </button>
-              <p className="form-note">
-                Door te versturen geef je toestemming om contact met je op te
-                nemen over je aanvraag.
-              </p>
-            </form>
+            <OfferteForm />
           </div>
         </section>
       </main>
