@@ -368,7 +368,7 @@ export default async function Home() {
           <a className="brand footer-brand" href="#" aria-label="AR Civil Solutions, naar boven">
             <img
               className="brand-logo"
-              src="/images/brand/logo-horizontal.png"
+              src="/images/brand/logo-horizontal-light.png"
               alt="AR Civil Solutions"
             />
           </a>

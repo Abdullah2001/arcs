@@ -105,11 +105,10 @@ textarea {
 }
 
 .brand-logo {
-  width: 196px;
-  height: 68px;
+  width: 264px;
+  height: 48px;
   object-fit: contain;
   object-position: left center;
-  mix-blend-mode: multiply;
 }
 
 .desktop-nav {
@@ -815,15 +814,9 @@ footer {
   padding-bottom: 40px;
 }
 
-.footer-brand {
-  padding: 3px 10px;
-  background: #fff;
-}
-
 .footer-brand .brand-logo {
-  width: 182px;
-  height: 72px;
-  mix-blend-mode: normal;
+  width: 240px;
+  height: 44px;
 }
 
 .footer-top > p {
@@ -1068,8 +1061,8 @@ footer {
   }
 
   .brand-logo {
-    width: 160px;
-    height: 60px;
+    width: 200px;
+    height: 38px;
   }
 
   .hero {
@@ -1203,8 +1196,8 @@ footer {
   }
 
   .footer-brand .brand-logo {
-    width: 118px;
-    height: 54px;
+    width: 200px;
+    height: 38px;
   }
 
   .whatsapp-button {
