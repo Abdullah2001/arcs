@@ -1,0 +1,128 @@
+/* Begrotingstool — bouwt voort op beheer.module.css */
+main.main { width: min(100% - 2 * var(--gutter), 1360px); gap: 28px; }
+.kop { display: grid; gap: 20px; }
+.knoppen { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.status { margin-left: 8px; font-size: 0.875rem; color: var(--muted); }
+
+.indeling { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+.links { display: grid; gap: 28px; min-width: 0; }
+.rechts { position: sticky; top: 96px; }
+
+.velden { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+.veld select, .veld textarea, .regel select, .regel input, .getal input {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 11px;
+  background: var(--field);
+  border: 1px solid var(--field-line);
+  color: var(--ink);
+  font-size: 0.9375rem;
+}
+.veld textarea { resize: vertical; line-height: 1.5; }
+.veld select:focus, .veld textarea:focus, .regel select:focus, .regel input:focus, .getal input:focus { outline: none; border-color: var(--gold); }
+.breed { grid-column: 1 / -1; }
+
+.getal { position: relative; display: block; min-width: 0; }
+.getal input { text-align: right; padding-right: 34px; font-variant-numeric: tabular-nums; }
+.getal > span { position: absolute; right: 11px; top: 50%; transform: translateY(-50%); font-size: 0.8125rem; color: var(--muted); pointer-events: none; }
+
+.sectieKop { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.sectieKop h2 { font-size: 1.75rem; }
+.sectieKop > span { font-family: var(--display); font-size: 1.25rem; color: var(--gold-light); font-variant-numeric: tabular-nums; }
+
+.zoeker { display: grid; gap: 10px; }
+.zoekVelden { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.resultaten { border: 1px solid var(--field-line); max-height: 360px; overflow-y: auto; background: var(--night); }
+.resultaten ul { display: grid; }
+.resultaten li + li { border-top: 1px solid var(--line); }
+.resultaten button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 32px;
+  gap: 14px;
+  align-items: center;
+  padding: 10px 12px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.resultaten button:hover, .resultaten button:focus-visible { background: rgba(176, 138, 52, 0.12); outline: none; }
+.product, .prijs { display: grid; gap: 1px; font-size: 0.9375rem; }
+.product small, .prijs small { font-size: 0.8125rem; color: var(--muted); }
+.prijs { text-align: right; font-variant-numeric: tabular-nums; }
+.plus { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid var(--gold-line); color: var(--gold-light); font-size: 1.25rem; line-height: 1; }
+.leeg { padding: 14px; color: var(--muted); font-size: 0.9375rem; }
+
+.regels { display: grid; gap: 8px; }
+.regel { display: grid; gap: 12px; align-items: start; padding: 12px; background: var(--night); border: 1px solid var(--line); }
+.materiaal { grid-template-columns: minmax(0, 1fr) 200px 120px 100px auto; }
+.arbeidRegel { grid-template-columns: minmax(0, 1fr) 140px 220px 100px auto; }
+.regelKop { padding-block: 0; background: transparent; border: 0; font-size: 0.8125rem; color: var(--muted); }
+.regelKop span:nth-child(n + 3) { text-align: right; }
+.regel small { display: block; margin-top: 4px; font-size: 0.8125rem; color: var(--muted); }
+.omschrijving { min-width: 0; }
+.hoeveelheid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.hoeveelheid small { grid-column: 1 / -1; margin-top: 0; }
+.hoeveelheid select, .eenheid { padding-inline: 8px; }
+.urenTarief { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; color: var(--muted); }
+.bedrag { align-self: center; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.regelKnoppen { display: flex; gap: 4px; align-self: center; }
+.regelKnoppen button { width: 34px; height: 34px; background: transparent; border: 1px solid var(--field-line); cursor: pointer; font-size: 1rem; }
+.regelKnoppen button:hover:not(:disabled) { border-color: var(--ink); }
+.regelKnoppen button:last-child:hover { border-color: #d66050; color: #f1a597; }
+.regelKnoppen button:disabled { opacity: 0.25; cursor: default; }
+
+.keuze { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; padding: 0; border: 0; }
+.keuze legend { margin-bottom: 8px; font-weight: 600; }
+.keuze label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.keuze input { accent-color: var(--gold); width: 18px; height: 18px; }
+
+.voorbeeld { background: #fbfaf7; color: #1c1e21; padding: 4px; }
+.voorbeeld .leeg { color: #686a6e; }
+.voorbeeld table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.voorbeeld th { background: var(--night); color: var(--gold-light); font-size: 0.8125rem; text-align: left; padding: 10px 12px; }
+.voorbeeld td { padding: 9px 12px; border-bottom: 1px solid #e3e0d8; }
+.voorbeeld th:nth-child(n + 2), .voorbeeld td:last-child, .voorbeeld tbody td:nth-child(2) { text-align: right; white-space: nowrap; }
+.voorbeeld tfoot td { border: 0; padding-block: 5px; color: #55575b; }
+.voorbeeld tfoot td:first-child { text-align: right; }
+.voorbeeld tfoot tr:first-child td { padding-top: 12px; }
+.voorbeeld .eind td { background: var(--night); color: #fff; font-weight: 700; padding-block: 10px; }
+.voorbeeld .eind td:last-child { color: var(--gold-light); }
+
+.upload { position: relative; overflow: hidden; }
+.upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+.som { gap: 20px; }
+.som h2 { font-size: 1.5rem; }
+.marges { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.marges .veld { font-size: 0.75rem; line-height: 1.3; align-content: end; }
+.lijst { display: grid; margin: 0; font-variant-numeric: tabular-nums; }
+.lijst div { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; font-size: 0.9375rem; color: var(--ink-soft); }
+.lijst dd { margin: 0; }
+.lijst .sub { border-top: 1px solid var(--line); color: var(--ink); font-weight: 600; }
+.lijst .totaal { margin-top: 8px; padding: 12px 14px; background: var(--night-deep); border-left: 3px solid var(--gold); color: var(--ink); font-weight: 700; }
+.lijst .totaal dd { color: var(--gold-light); font-family: var(--display); font-size: 1.25rem; }
+.pdfKnoppen { display: grid; gap: 8px; }
+
+.opgeslagen { display: grid; gap: 8px; }
+.opgeslagen li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 16px; align-items: center; padding: 12px 14px; background: var(--night); border: 1px solid var(--line); }
+.opgeslagen li.huidig { border-color: var(--gold-line); }
+.opgeslagen small { display: block; color: var(--muted); font-size: 0.8125rem; }
+
+@media (max-width: 1100px) {
+  .indeling { grid-template-columns: 1fr; }
+  .rechts { position: static; }
+  .materiaal, .arbeidRegel { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .regel .omschrijving { grid-column: 1 / -1; }
+  .regelKop { display: none; }
+  .regel .bedrag { text-align: left; }
+}
+@media (max-width: 640px) {
+  .zoekVelden, .marges { grid-template-columns: 1fr; }
+  .materiaal, .arbeidRegel { grid-template-columns: 1fr; }
+  .regel .bedrag { font-size: 1.0625rem; }
+  .opgeslagen li { grid-template-columns: 1fr; }
+  .resultaten button { grid-template-columns: minmax(0, 1fr) 32px; }
+  .prijs { grid-column: 1; grid-row: 2; text-align: left; }
+}
