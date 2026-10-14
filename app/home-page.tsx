@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { fallbackProjects, listProjectsWithFallback } from "@/db/projects";
-import { dictionaries, fallbackProjectTitlesEn } from "./i18n";
+import { listProjectsWithFallback } from "@/db/projects";
+import { dictionaries } from "./i18n";
 import { ArrowIcon, CheckIcon, Icon, PhoneIcon, WhatsAppIcon } from "./icons";
 import MobileMenu from "./mobile-menu";
 import OfferteForm from "./offerte-form";
@@ -41,11 +41,8 @@ export async function buildMetadata(lang: Lang): Promise<Metadata> {
 export default async function HomePage({ lang }: { lang: Lang }) {
   const t = dictionaries[lang];
   const other: Lang = lang === "nl" ? "en" : "nl";
-  const fallbackIds = new Set(fallbackProjects.map((p) => p.id));
   const projects = (await listProjectsWithFallback()).map((p) =>
-    lang === "en" && fallbackIds.has(p.id) && fallbackProjectTitlesEn[p.id]
-      ? { ...p, ...fallbackProjectTitlesEn[p.id] }
-      : p,
+    lang === "en" ? { ...p, title: p.titleEn || p.title, location: p.locationEn || p.location } : p,
   );
   const whatsappHref = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(t.cta.whatsappText)}`;
   const nav = [

@@ -296,11 +296,3 @@ const en: Dictionary = {
 };
 
 export const dictionaries: Record<Lang, Dictionary> = { nl, en };
-
-// Engelse titels voor de standaardprojecten (eigen projecten uit het
-// fotobeheer worden getoond zoals ze zijn ingevoerd).
-export const fallbackProjectTitlesEn: Record<string, { title: string; location: string }> = {
-  "woonkamer-renovatie": { title: "Complete living room renovation", location: "Eindhoven · interior finishing" },
-  badkamerrenovatie: { title: "Bathroom renovation", location: "Veldhoven · tiling & fitting" },
-  "stuc-en-schilderwerk": { title: "Plastering and painting", location: "Helmond · walls & ceilings" },
-};

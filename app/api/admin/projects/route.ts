@@ -1,75 +1,41 @@
-import { desc, max } from "drizzle-orm";
+import { asc, max } from "drizzle-orm";
 import { getAdminApiUser, isSameOriginWrite } from "@/app/admin-auth";
 import { getUploadsBucket } from "@/app/storage";
 import { getDb } from "@/db";
 import { projects } from "@/db/schema";
+import { checkImage, jsonError, readTexts } from "../project-input";
 
 export const dynamic = "force-dynamic";
 
-const MAX_IMAGE_SIZE = 12 * 1024 * 1024;
-const allowedImageTypes = new Map([
-  ["image/jpeg", "jpg"],
-  ["image/png", "png"],
-  ["image/webp", "webp"],
-]);
-
-function cleanText(value: FormDataEntryValue | null, maxLength: number): string {
-  return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
-}
-
-export async function GET() {
-  const user = await getAdminApiUser();
-  if (!user) return Response.json({ error: "Geen toegang." }, { status: 403 });
-
-  const rows = await getDb().select().from(projects).orderBy(desc(projects.sortOrder));
+export async function GET(request: Request) {
+  if (!(await getAdminApiUser(request))) return jsonError("Je bent niet (meer) ingelogd.", 401);
+  const rows = await getDb().select().from(projects).orderBy(asc(projects.sortOrder));
   return Response.json({ projects: rows });
 }
 
 export async function POST(request: Request) {
-  const user = await getAdminApiUser();
-  if (!user) return Response.json({ error: "Geen toegang." }, { status: 403 });
-  if (!isSameOriginWrite(request)) {
-    return Response.json({ error: "Ongeldige aanvraag." }, { status: 403 });
-  }
+  const user = await getAdminApiUser(request);
+  if (!user) return jsonError("Je bent niet (meer) ingelogd.", 401);
+  if (!isSameOriginWrite(request)) return jsonError("Ongeldige aanvraag.", 403);
 
   const formData = await request.formData();
-  const title = cleanText(formData.get("title"), 90);
-  const location = cleanText(formData.get("location"), 120);
+  const texts = readTexts(formData);
   const image = formData.get("image");
 
-  if (!title || !location) {
-    return Response.json({ error: "Vul een titel en locatie in." }, { status: 400 });
-  }
-  if (!(image instanceof File)) {
-    return Response.json({ error: "Kies een foto." }, { status: 400 });
-  }
-
-  const extension = allowedImageTypes.get(image.type);
-  if (!extension) {
-    return Response.json(
-      { error: "Gebruik een JPG-, PNG- of WebP-afbeelding." },
-      { status: 400 },
-    );
-  }
-  if (image.size === 0 || image.size > MAX_IMAGE_SIZE) {
-    return Response.json(
-      { error: "De foto mag maximaal 12 MB groot zijn." },
-      { status: 400 },
-    );
-  }
+  if (!texts.title || !texts.location) return jsonError("Vul een titel en een locatie in.");
+  if (!(image instanceof File)) return jsonError("Kies een foto.");
+  const checked = checkImage(image);
+  if ("error" in checked) return jsonError(checked.error);
 
   const db = getDb();
   const bucket = getUploadsBucket();
   const id = crypto.randomUUID();
-  const objectKey = `projects/${id}.${extension}`;
-  const [{ highestSortOrder }] = await db
-    .select({ highestSortOrder: max(projects.sortOrder) })
-    .from(projects);
-  const sortOrder = (highestSortOrder ?? 0) + 1;
+  const objectKey = `projects/${id}-${Date.now()}.${checked.extension}`;
+  const [{ highestSortOrder }] = await db.select({ highestSortOrder: max(projects.sortOrder) }).from(projects);
 
   await bucket.put(objectKey, image.stream(), {
     httpMetadata: { contentType: image.type },
-    customMetadata: { uploadedBy: user.email },
+    customMetadata: { uploadedBy: user.username },
   });
 
   try {
@@ -77,11 +43,10 @@ export async function POST(request: Request) {
       .insert(projects)
       .values({
         id,
-        title,
-        location,
-        imagePath: `/api/project-images/${id}`,
+        ...texts,
+        imagePath: `/api/project-images/${id}?v=${Date.now()}`,
         objectKey,
-        sortOrder,
+        sortOrder: (highestSortOrder ?? 0) + 1,
       })
       .returning();
     return Response.json({ project }, { status: 201 });
