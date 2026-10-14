@@ -126,3 +126,6 @@ main.main { width: min(100% - 2 * var(--gutter), 1360px); gap: 28px; }
   .resultaten button { grid-template-columns: minmax(0, 1fr) 32px; }
   .prijs { grid-column: 1; grid-row: 2; text-align: left; }
 }
+
+.vraag { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.noot { color: var(--muted); font-size: 0.8125rem; line-height: 1.4; }

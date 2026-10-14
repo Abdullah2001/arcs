@@ -39,6 +39,8 @@ type Props = {
   /** "server" in de beheeromgeving; "lokaal" in de testversie zonder server. */
   modus: "server" | "lokaal";
   logoUrl?: string;
+  /** Begroting om mee te beginnen als er nog geen concept in deze browser staat (testversie). */
+  voorbeeld?: Begroting;
 };
 type Melding = { text: string; ok: boolean } | null;
 
@@ -132,16 +134,17 @@ export default function BegrotingTool(props: Props) {
   return <Werkblad {...props} />;
 }
 
-function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/brand/logo-horizontal-light.png" }: Props) {
+function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/brand/logo-horizontal-light.png", voorbeeld }: Props) {
   const opslag: Opslag = useMemo(() => (modus === "server" ? serverOpslag : lokaleOpslag(beginPrijzen)), [modus, beginPrijzen]);
   const [prijzen, setPrijzen] = useState(() => (modus === "lokaal" ? (lokalePrijzen() ?? beginPrijzen) : beginPrijzen));
-  const [begroting, setBegroting] = useState<Begroting>(() => leesConcept() ?? nieuweBegroting());
+  const [begroting, setBegroting] = useState<Begroting>(() => leesConcept() ?? voorbeeld ?? nieuweBegroting());
   const [opgeslagen, setOpgeslagen] = useState<string | null>(null);
   const [melding, setMelding] = useState<Melding>(null);
   const [bezig, setBezig] = useState<string | null>(null);
   const [lijst, setLijst] = useState<Samenvatting[] | null>(null);
   const [lijstOpen, setLijstOpen] = useState(false);
   const [verwijderVraag, setVerwijderVraag] = useState<string | null>(null);
+  const [nieuwVraag, setNieuwVraag] = useState(false);
 
   const [term, setTerm] = useState("");
   const [groep, setGroep] = useState("");
@@ -221,8 +224,12 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
       if (id === begroting.id) setOpgeslagen(null);
     });
 
-  function nieuw() {
-    if (gewijzigd && (begroting.materialen.length || begroting.arbeid.length) && !window.confirm("Niet opgeslagen wijzigingen gaan verloren. Toch een nieuwe begroting beginnen?")) return;
+  function nieuw(zeker = false) {
+    if (!zeker && gewijzigd && (begroting.materialen.length || begroting.arbeid.length)) {
+      setNieuwVraag(true);
+      return;
+    }
+    setNieuwVraag(false);
     const n = nieuweBegroting();
     n.instellingen = { ...begroting.instellingen };
     setBegroting(n);
@@ -274,7 +281,7 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
           </p>
         </div>
         <div className={b.knoppen}>
-          <button type="button" className={s.secondary} onClick={nieuw}>Nieuwe begroting</button>
+          <button type="button" className={s.secondary} onClick={() => nieuw()}>Nieuwe begroting</button>
           <button type="button" className={s.secondary} onClick={kopie}>Kopie maken</button>
           <button
             type="button"
@@ -292,6 +299,15 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
           </button>
           <span className={b.status}>{opgeslagen === null ? "Nog niet opgeslagen" : gewijzigd ? "Niet opgeslagen wijzigingen" : "Alles is opgeslagen"}</span>
         </div>
+        {nieuwVraag && (
+          <div className={`${s.warn} ${b.vraag}`} role="alert">
+            <span>Deze begroting heeft wijzigingen die nog niet zijn opgeslagen. Toch een nieuwe beginnen?</span>
+            <div className={s.actions}>
+              <button type="button" className={s.danger} onClick={() => nieuw(true)}>Nieuwe beginnen</button>
+              <button type="button" className={s.secondary} onClick={() => setNieuwVraag(false)}>Annuleren</button>
+            </div>
+          </div>
+        )}
         {modus === "lokaal" && (
           <p className={s.warn}>Testversie: begrotingen en geüploade prijzen worden alleen in deze browser bewaard.</p>
         )}
@@ -674,6 +690,7 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
               <button type="button" className={s.secondary} onClick={() => pdf("werkbegroting")} disabled={bezig === "werkbegroting"}>
                 {bezig === "werkbegroting" ? "PDF maken…" : "Werkbegroting downloaden (PDF)"}
               </button>
+              {modus === "lokaal" && <small className={b.noot}>In deze testversie blokkeert de pagina soms het downloaden. Op de website werkt het altijd.</small>}
             </div>
           </section>
         </aside>
