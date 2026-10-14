@@ -1,11 +1,8 @@
-import HomePage, { buildMetadata } from "../home-page";
+import Home, { homeMetadata } from "../site/home";
 
 export const dynamic = "force-dynamic";
-
-export function generateMetadata() {
-  return buildMetadata("nl");
-}
+export const generateMetadata = () => homeMetadata("nl");
 
 export default function Page() {
-  return <HomePage lang="nl" />;
+  return <Home lang="nl" />;
 }

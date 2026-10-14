@@ -1,6 +1,6 @@
-import "../globals.css";
+import "../site.css";
 
-export default function DutchRootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function DutchLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="nl">
       <body>{children}</body>
