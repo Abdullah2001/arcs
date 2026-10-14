@@ -1,12 +1,13 @@
 import Link from "next/link";
 import s from "./beheer.module.css";
 
-export default function AdminBar({ username, active }: { username: string; active: "fotos" | "account" }) {
+export default function AdminBar({ username, active }: { username: string; active: "fotos" | "begroting" | "account" }) {
   return (
     <header className={s.bar}>
       <Link href="/beheer"><img src="/images/brand/logo-horizontal-light.png" alt="AR Civil Solutions" width={1602} height={291} /></Link>
       <nav className={s.tabs} aria-label="Beheer">
         <Link href="/beheer" aria-current={active === "fotos" ? "page" : undefined}>Foto&apos;s</Link>
+        <Link href="/beheer/begroting" aria-current={active === "begroting" ? "page" : undefined}>Begroting</Link>
         <Link href="/beheer/account" aria-current={active === "account" ? "page" : undefined}>Account</Link>
         <Link href="/" target="_blank">Website bekijken</Link>
       </nav>

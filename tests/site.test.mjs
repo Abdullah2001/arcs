@@ -36,3 +36,9 @@ test("Engelse homepage", async () => {
   assert.match(html, /Renovation and finishing work, right down to the last detail\./);
   assert.match(html, /Request a free quote/);
 });
+
+test("Begrotingstool alleen na inloggen", async () => {
+  const res = await render("/beheer/begroting");
+  assert.ok([302, 303, 307, 308].includes(res.status), `status ${res.status}`);
+  assert.match(res.headers.get("location") ?? "", /\/beheer\/inloggen/);
+});

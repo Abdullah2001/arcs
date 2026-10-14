@@ -41,10 +41,17 @@ interface R2Bucket {
   ): Promise<unknown>;
   get(key: string): Promise<R2ObjectBody | null>;
   delete(key: string | string[]): Promise<void>;
+  list(options?: { prefix?: string; cursor?: string; limit?: number; include?: ("httpMetadata" | "customMetadata")[] }): Promise<{
+    objects: { key: string; uploaded: Date; customMetadata?: Record<string, string> }[];
+    truncated: boolean;
+    cursor?: string;
+  }>;
 }
 
 interface R2ObjectBody {
   body: ReadableStream;
+  text(): Promise<string>;
+  json<T = unknown>(): Promise<T>;
   httpEtag: string;
   writeHttpMetadata(headers: Headers): void;
 }
