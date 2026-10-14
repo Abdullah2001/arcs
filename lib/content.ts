@@ -122,7 +122,7 @@ const en: Copy = {
   meta: {
     title: "AR Civil Solutions | Renovation and finishing work in Eindhoven",
     description:
-      "Plastering, painting, tiling, flooring, carpentry, kitchens, demolition and complete renovations in Eindhoven and the surrounding area. One point of contact from survey to handover.",
+      "Plastering, painting, tiling, flooring, carpentry, kitchens, demolition and complete renovations in Eindhoven and the surrounding area. A single point of contact from the first site visit to handover.",
   },
   skip: "Skip to content",
   nav: { services: "Services", projects: "Projects", process: "How we work", contact: "Contact", menu: "Menu", close: "Close" },
@@ -135,24 +135,24 @@ const en: Copy = {
     call: "Call",
   },
   hero: {
-    region: "Eindhoven and surroundings",
-    title: "Renovation and finishing work, down to the last seam.",
+    region: "Eindhoven and the surrounding area",
+    title: "Renovation and finishing work, right down to the last detail.",
     intro:
-      "Plastering, tiling, floors, kitchens or a complete renovation. One point of contact from the first site visit to handover.",
+      "Plastering, tiling, flooring, kitchens or a complete renovation. A single point of contact from the first site visit to handover.",
   },
-  promises: ["One fixed point of contact", "A clear quote up front", "Clean and safe work", "English and Dutch spoken"],
+  promises: ["A single point of contact", "A clear quote up front", "Tidy and safe working", "English and Dutch spoken"],
   services: {
     title: "What we do",
-    intro: "A single job or everything in one project. We coordinate the trades and the schedule.",
+    intro: "A one-off job or a complete project. We coordinate the tradespeople and the schedule.",
     items: [
-      { title: "Plastering", text: "Smooth walls and ceilings ready for paint, or repairs to existing plaster." },
+      { title: "Plastering", text: "Smooth, paint-ready walls and ceilings, or repairs to existing plasterwork." },
       { title: "Painting", text: "Interior and exterior, including preparation of wood and walls." },
       { title: "Tiling", text: "Bathrooms, toilets and kitchens, including grouting and sealing." },
-      { title: "Flooring", text: "Levelling, laminate, vinyl and skirting. We remove old floors first." },
-      { title: "Carpentry and fitting", text: "Interior doors, frames, cabinets, window sills and boxing-in." },
-      { title: "Kitchens", text: "Old kitchen out, new kitchen in, finished to the last detail." },
-      { title: "Demolition", text: "Removing kitchens, bathrooms and floors, waste taken away." },
-      { title: "Complete renovation", text: "A whole home or floor refinished." },
+      { title: "Flooring", text: "Levelling, laminate, vinyl and skirting boards. We remove the old flooring first." },
+      { title: "Carpentry and fitting", text: "Interior doors, door and window frames, cabinets, window sills and boxing-in." },
+      { title: "Kitchens", text: "Old kitchen out, new kitchen in, including all the finishing work." },
+      { title: "Demolition", text: "Removal of kitchens, bathrooms and floors, including waste disposal." },
+      { title: "Complete renovation", text: "A whole home or a single floor, completely refinished." },
     ],
   },
   projects: { title: "Projects", cta: "Planning something similar?" },
@@ -160,9 +160,9 @@ const en: Copy = {
     title: "From request to handover",
     steps: [
       { title: "Request", text: "Via the form, by phone or on WhatsApp." },
-      { title: "Site visit", text: "We visit, measure and suggest an approach." },
-      { title: "Quote", text: "Price and schedule clearly in writing." },
-      { title: "Preparation", text: "Materials and trades scheduled." },
+      { title: "Site visit", text: "We visit, take measurements and advise on the approach." },
+      { title: "Quote", text: "A clear price and schedule in writing." },
+      { title: "Preparation", text: "We order the materials and schedule the tradespeople." },
       { title: "The work", text: "We keep you informed along the way." },
       { title: "Handover", text: "We check it together and leave it clean." },
     ],
@@ -173,7 +173,7 @@ const en: Copy = {
     phone: "Phone",
     email: "Email",
     area: "Service area",
-    areaValue: "Eindhoven and surroundings",
+    areaValue: "Eindhoven and the surrounding area",
   },
   form: {
     name: "Name",
@@ -185,7 +185,7 @@ const en: Copy = {
     typeChoose: "Choose a type of work",
     types: ["Plastering", "Painting", "Tiling", "Flooring", "Carpentry and fitting", "Kitchen", "Demolition", "Complete renovation", "Other"],
     message: "What would you like done?",
-    messageHint: "E.g. retile a 6 m² bathroom, remove the old tiles.",
+    messageHint: "E.g. retile a 6 m² bathroom and remove the old tiles.",
     send: "Request a quote",
     sending: "Sending…",
     sent: "Your request has been sent. We will contact you as soon as possible.",
@@ -193,7 +193,7 @@ const en: Copy = {
     privacy: "We only use your details to contact you about this request.",
     subject: "New quote request via the website (English)",
   },
-  footer: { rights: "All rights reserved.", kvk: "Chamber of Commerce", btw: "VAT" },
+  footer: { rights: "All rights reserved.", kvk: "Chamber of Commerce (KvK)", btw: "VAT" },
 };
 
 export const copy: Record<Lang, Copy> = { nl, en };
