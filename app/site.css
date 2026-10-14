@@ -1,9 +1,9 @@
 /* AR Civil Solutions — ontwerp A: donker en goud */
 
 @font-face {
-  font-family: "Bodoni Moda";
-  src: url("/fonts/bodoni-moda.woff2") format("woff2-variations");
-  font-weight: 400 900;
+  font-family: "Sora";
+  src: url("/fonts/sora.woff2") format("woff2-variations");
+  font-weight: 100 800;
   font-style: normal;
   font-display: swap;
 }
@@ -30,7 +30,7 @@
   --line: rgba(255, 255, 255, 0.08);
   --gold-line: rgba(176, 138, 52, 0.4);
 
-  --serif: "Bodoni Moda", Didot, "Times New Roman", serif;
+  --display: "Sora", "Helvetica Neue", Arial, sans-serif;
   --sans: "Figtree", "Helvetica Neue", Arial, sans-serif;
 
   --wrap: 1280px;
@@ -65,11 +65,10 @@ ol, ul { padding: 0; list-style: none; }
 button, input, select, textarea { font: inherit; color: inherit; }
 
 h1, h2 {
-  font-family: var(--serif);
-  font-weight: 500;
-  font-variation-settings: "opsz" 28;
-  letter-spacing: -0.01em;
-  line-height: 1.04;
+  font-family: var(--display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.06;
   text-wrap: balance;
 }
 h2 { font-size: clamp(2.375rem, 4.4vw, 3.5rem); }
@@ -175,9 +174,10 @@ p { text-wrap: pretty; }
   display: block;
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
-  font-family: var(--serif);
-  font-variation-settings: "opsz" 28;
-  font-size: 1.75rem;
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-size: 1.5rem;
 }
 .menu-panel .menu-lang { border: 0; font-family: var(--sans); font-size: 1rem; color: var(--gold-light); margin-top: 12px; }
 
@@ -249,7 +249,7 @@ p { text-wrap: pretty; }
 .process h2 { margin-bottom: 56px; }
 .steps { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 32px; border-top: 1px solid var(--gold); }
 .steps li { padding-top: 24px; display: grid; align-content: start; gap: 8px; }
-.step-no { font-family: var(--serif); font-variation-settings: "opsz" 28; font-size: 2.125rem; line-height: 1; color: var(--gold-light); }
+.step-no { font-family: var(--display); font-weight: 300; font-size: 2rem; line-height: 1; color: var(--gold-light); }
 .steps strong { font-weight: 600; }
 .steps span:last-child { color: var(--muted); font-size: 0.9375rem; }
 
