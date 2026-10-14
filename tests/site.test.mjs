@@ -33,6 +33,6 @@ test("Engelse homepage", async () => {
   assert.equal(res.status, 200);
   const html = await res.text();
   assert.match(html, /<html lang="en">/);
-  assert.match(html, /Renovation and finishing work, down to the last seam\./);
+  assert.match(html, /Renovation and finishing work, right down to the last detail\./);
   assert.match(html, /Request a free quote/);
 });
