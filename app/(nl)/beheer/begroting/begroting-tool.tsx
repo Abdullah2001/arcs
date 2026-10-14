@@ -249,7 +249,20 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
       const [{ offertePdf, werkbegrotingPdf }, logo] = await Promise.all([import("@/lib/begroting/pdf"), naarDataUrl(logoUrl)]);
       const maak = soort === "offerte" ? offertePdf : werkbegrotingPdf;
       const { doc, naam } = maak(begroting, { bedrijf, logo });
-      doc.save(naam);
+      // In de testversie (een pagina binnen Claude) mag een pagina zelf niets downloaden;
+      // daar loopt het via de downloadfunctie van Claude. Op de website gewoon downloaden.
+      type Downloads = { save(r: { filename: string; data: Blob }): Promise<unknown> };
+      const claude = (window as unknown as { claude?: { use(naam: string): Promise<Downloads | null> } }).claude;
+      const downloads = claude ? await claude.use("downloads") : null;
+      if (!downloads) {
+        doc.save(naam);
+        return;
+      }
+      try {
+        await downloads.save({ filename: naam, data: doc.output("blob") });
+      } catch (e) {
+        if ((e as { code?: string }).code !== "declined") throw new Error("Downloaden is hier niet gelukt.");
+      }
     });
 
   const uploadPrijzen = (file: File) =>
@@ -690,7 +703,6 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
               <button type="button" className={s.secondary} onClick={() => pdf("werkbegroting")} disabled={bezig === "werkbegroting"}>
                 {bezig === "werkbegroting" ? "PDF maken…" : "Werkbegroting downloaden (PDF)"}
               </button>
-              {modus === "lokaal" && <small className={b.noot}>In deze testversie blokkeert de pagina soms het downloaden. Op de website werkt het altijd.</small>}
             </div>
           </section>
         </aside>
