@@ -8,7 +8,6 @@ export const company = {
   email: "info@arcivilsolutions.nl",
   kvk: "", // wordt pas getoond als het is ingevuld
   btw: "",
-  region: ["Eindhoven", "Veldhoven", "Helmond", "Best", "Son en Breugel", "Nuenen", "Geldrop", "Waalre"],
 };
 
 export type Lang = "nl" | "en";

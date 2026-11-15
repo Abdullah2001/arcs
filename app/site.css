@@ -215,7 +215,6 @@ p { text-wrap: pretty; }
   display: grid;
   gap: 28px;
 }
-.region { color: var(--gold-light); font-size: 0.9375rem; font-weight: 600; letter-spacing: 0.06em; }
 .hero h1 { max-width: 15ch; font-size: clamp(2.875rem, 6.6vw, 5.75rem); line-height: 1.02; }
 .hero-intro { max-width: 34rem; font-size: 1.1875rem; color: var(--ink-soft); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }

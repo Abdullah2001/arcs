@@ -80,7 +80,6 @@ export default async function Home({ lang }: { lang: Lang }) {
             <RoofLines className="hero-roof" />
           )}
           <div className="wrap hero-inner">
-            <p className="region">{t.hero.region}</p>
             <h1>{t.hero.title}</h1>
             <p className="hero-intro">{t.hero.intro}</p>
             <div className="hero-actions">
@@ -171,10 +170,6 @@ export default async function Home({ lang }: { lang: Lang }) {
                 <div>
                   <dt>{t.contact.email}</dt>
                   <dd><a href={`mailto:${company.email}`}>{company.email}</a></dd>
-                </div>
-                <div>
-                  <dt>{t.contact.area}</dt>
-                  <dd>{t.contact.areaValue}</dd>
                 </div>
               </dl>
             </div>

@@ -1,6 +1,6 @@
 # AR Civil Solutions — website
 
-Website van AR Civil Solutions (renovatie en afbouw, Eindhoven en omgeving), in het
+Website van AR Civil Solutions (renovatie en afbouw), in het
 Nederlands (`/`) en Engels (`/en`), met een beveiligde beheerpagina voor foto's (`/beheer`).
 
 ## Wat waar staat

@@ -6,7 +6,7 @@ export type Copy = {
   nav: { services: string; projects: string; process: string; contact: string; menu: string; close: string };
   switchTo: { label: string; short: string };
   cta: { quote: string; quoteLong: string; whatsapp: string; whatsappText: string; call: string };
-  hero: { region: string; title: string; intro: string };
+  hero: { title: string; intro: string };
   promises: string[];
   services: { title: string; intro: string; items: { title: string; text: string }[] };
   projects: { title: string; cta: string };
@@ -16,8 +16,6 @@ export type Copy = {
     intro: string;
     phone: string;
     email: string;
-    area: string;
-    areaValue: string;
   };
   form: {
     name: string;
@@ -42,9 +40,9 @@ export type Copy = {
 
 const nl: Copy = {
   meta: {
-    title: "AR Civil Solutions | Renovatie en afbouw in Eindhoven",
+    title: "AR Civil Solutions | Renovatie en afbouw",
     description:
-      "Stucwerk, schilderwerk, tegelwerk, vloeren, montage, keukens, sloopwerk en complete renovaties in Eindhoven en omgeving. Eén aanspreekpunt van opname tot oplevering.",
+      "Stucwerk, schilderwerk, tegelwerk, vloeren, montage, keukens, sloopwerk en complete renovaties. Eén aanspreekpunt van opname tot oplevering.",
   },
   skip: "Naar de inhoud",
   nav: { services: "Diensten", projects: "Projecten", process: "Werkwijze", contact: "Contact", menu: "Menu", close: "Sluiten" },
@@ -57,7 +55,6 @@ const nl: Copy = {
     call: "Bellen",
   },
   hero: {
-    region: "Eindhoven en omgeving",
     title: "Renovatie en afbouw, tot in de laatste naad.",
     intro:
       "Stucwerk, tegels, vloeren, keukens of een complete verbouwing. Eén aanspreekpunt van de eerste opname tot de oplevering.",
@@ -94,8 +91,6 @@ const nl: Copy = {
     intro: "We nemen contact op om een opname op locatie te plannen. De opname en de offerte zijn gratis.",
     phone: "Telefoon",
     email: "E-mail",
-    area: "Werkgebied",
-    areaValue: "Eindhoven en omgeving",
   },
   form: {
     name: "Naam",
@@ -120,9 +115,9 @@ const nl: Copy = {
 
 const en: Copy = {
   meta: {
-    title: "AR Civil Solutions | Renovation and finishing work in Eindhoven",
+    title: "AR Civil Solutions | Renovation and finishing work",
     description:
-      "Plastering, painting, tiling, flooring, carpentry, kitchens, demolition and complete renovations in Eindhoven and the surrounding area. A single point of contact from the first site visit to handover.",
+      "Plastering, painting, tiling, flooring, carpentry, kitchens, demolition and complete renovations. A single point of contact from the first site visit to handover.",
   },
   skip: "Skip to content",
   nav: { services: "Services", projects: "Projects", process: "How we work", contact: "Contact", menu: "Menu", close: "Close" },
@@ -135,7 +130,6 @@ const en: Copy = {
     call: "Call",
   },
   hero: {
-    region: "Eindhoven and the surrounding area",
     title: "Renovation and finishing work, right down to the last detail.",
     intro:
       "Plastering, tiling, flooring, kitchens or a complete renovation. A single point of contact from the first site visit to handover.",
@@ -172,8 +166,6 @@ const en: Copy = {
     intro: "We will contact you to schedule a site visit. The visit and the quote are free.",
     phone: "Phone",
     email: "Email",
-    area: "Service area",
-    areaValue: "Eindhoven and the surrounding area",
   },
   form: {
     name: "Name",
