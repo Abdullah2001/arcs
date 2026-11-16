@@ -161,7 +161,7 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
 
   const u = useMemo(() => bereken(begroting), [begroting]);
   const klantRegels = useMemo(() => offerteRegels(begroting, u), [begroting, u]);
-  const groepen = useMemo(() => [...new Set(prijzen.producten.map((p) => p.groep))].filter(Boolean).sort(), [prijzen]);
+  const groepen = useMemo(() => [...new Set(prijzen.producten.map((p) => p.groep))].filter(Boolean), [prijzen]);
   const winkels = useMemo(() => [...new Set(prijzen.producten.map((p) => p.winkel))].filter(Boolean).sort(), [prijzen]);
   const resultaten = useMemo(() => zoek(prijzen.producten, term, groep, winkel), [prijzen, term, groep, winkel]);
   const gewijzigd = opgeslagen !== JSON.stringify({ ...begroting, bijgewerkt: "" });
