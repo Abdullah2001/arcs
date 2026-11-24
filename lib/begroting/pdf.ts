@@ -5,16 +5,28 @@ import {
   arbeidBedrag,
   bereken,
   euro,
+  factuurBedragen,
   formatDatum,
   formatGetal,
   geldigTot,
   materiaalBedrag,
   offerteRegels,
+  vervaldatum,
   verpakkingen,
   type Begroting,
 } from "./reken";
 
-export type Bedrijf = { name: string; phoneDisplay: string; email: string; kvk: string; btw: string };
+export type Bedrijf = {
+  name: string;
+  phoneDisplay: string;
+  email: string;
+  kvk: string;
+  btw: string;
+  adres?: string;
+  postcode?: string;
+  plaats?: string;
+  iban?: string;
+};
 
 type RGB = [number, number, number];
 const NACHT: RGB = [21, 23, 26];
@@ -77,21 +89,25 @@ function kleineKop(doc: jsPDF, titel: string, logo: string) {
 }
 
 function voetteksten(doc: jsPDF, bedrijf: Bedrijf, titel: string, logo: string) {
-  const delen = [bedrijf.name, bedrijf.phoneDisplay, bedrijf.email];
-  if (bedrijf.kvk) delen.push(`KvK ${bedrijf.kvk}`);
-  if (bedrijf.btw) delen.push(`Btw ${bedrijf.btw}`);
+  const plaats = [bedrijf.postcode, bedrijf.plaats].filter(Boolean).join(" ");
+  const regel1 = [bedrijf.name, [bedrijf.adres, plaats].filter(Boolean).join(", "), bedrijf.phoneDisplay, bedrijf.email];
+  const regel2: string[] = [];
+  if (bedrijf.kvk) regel2.push(`KvK ${bedrijf.kvk}`);
+  if (bedrijf.btw) regel2.push(`Btw-id ${bedrijf.btw}`);
+  if (bedrijf.iban) regel2.push(`IBAN ${bedrijf.iban}`);
   const totaal = doc.getNumberOfPages();
   for (let p = 1; p <= totaal; p++) {
     doc.setPage(p);
     if (p > 1) kleineKop(doc, titel, logo);
     doc.setDrawColor(...GOUD);
     doc.setLineWidth(0.4);
-    doc.line(M, H - 15, W - M, H - 15);
+    doc.line(M, H - 16, W - M, H - 16);
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(...GRIJS);
-    doc.text(veilig(delen.filter(Boolean).join("   ·   ")), M, H - 10);
-    doc.text(`Pagina ${p} van ${totaal}`, W - M, H - 10, { align: "right" });
+    doc.text(veilig(regel1.filter(Boolean).join("   ·   ")), M, H - 11.4);
+    if (regel2.length) doc.text(veilig(regel2.join("   ·   ")), M, H - 7.6);
+    doc.text(`Pagina ${p} van ${totaal}`, W - M, H - 7.6, { align: "right" });
   }
 }
 
@@ -139,7 +155,7 @@ function gegevensBlok(doc: jsPDF, b: Begroting, links: string, rechts: [string, 
 }
 
 function ruimte(doc: jsPDF, y: number, nodig: number): number {
-  if (y + nodig > H - 22) {
+  if (y + nodig > H - 24) {
     doc.addPage();
     return 26;
   }
@@ -149,7 +165,7 @@ function ruimte(doc: jsPDF, y: number, nodig: number): number {
 function tabelStijl(kolommen: Record<number, { halign?: "left" | "right"; cellWidth?: number | "auto" }>) {
   return {
     theme: "plain" as const,
-    margin: { left: M, right: M, top: 24, bottom: 22 },
+    margin: { left: M, right: M, top: 24, bottom: 24 },
     styles: { font: "helvetica", fontSize: 9, cellPadding: { top: 2.6, bottom: 2.6, left: 2.6, right: 2.6 }, textColor: INKT, lineColor: LIJN, overflow: "linebreak" as const },
     headStyles: { fillColor: NACHT, textColor: GOUD_LICHT, fontStyle: "bold" as const, fontSize: 8 },
     alternateRowStyles: { fillColor: ZACHT },
@@ -210,6 +226,28 @@ function bestandsnaam(soort: string, b: Begroting) {
   return [soort, deel(b.nummer), deel(b.klant.naam)].filter(Boolean).join("_") + ".pdf";
 }
 
+/** Projecttitel met omschrijving eronder. Geeft de y-positie eronder terug. */
+function projectKop(doc: jsPDF, b: Begroting, y: number, standaard: string): number {
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(15);
+  doc.setTextColor(...INKT);
+  const titel = doc.splitTextToSize(veilig(b.project.titel.trim() || standaard), W - 2 * M) as string[];
+  doc.text(titel, M, y);
+  y += 6.5 * titel.length - 1;
+  if (b.project.omschrijving.trim()) y = alinea(doc, b.project.omschrijving, y + 1.5, { kleur: [60, 62, 66] });
+  return y + 6;
+}
+
+function klantRegels(doc: jsPDF, b: Begroting, y: number, u: ReturnType<typeof bereken>) {
+  const regels = offerteRegels(b, u);
+  autoTable(doc, {
+    ...tabelStijl({ 1: { halign: "right", cellWidth: 34 }, 2: { halign: "right", cellWidth: 38 } }),
+    startY: y,
+    head: [["Omschrijving", "Hoeveelheid", "Bedrag excl. btw"]],
+    body: regels.length ? regels.map((r) => [veilig(r.omschrijving), veilig(r.hoeveelheid), veilig(euro(r.bedrag))]) : [["Nog geen posten ingevuld", "", ""]],
+  });
+}
+
 export function offertePdf(b: Begroting, { bedrijf, logo }: Opties): { doc: jsPDF; naam: string } {
   const doc = new jsPDF({ unit: "mm", format: "a4", compress: true });
   doc.setProperties({ title: `Offerte ${b.nummer}`, author: bedrijf.name, subject: b.project.titel });
@@ -224,22 +262,8 @@ export function offertePdf(b: Begroting, { bedrijf, logo }: Opties): { doc: jsPD
   if (b.project.adres.trim()) rechts.push(["Werkadres", b.project.adres]);
   let y = gegevensBlok(doc, b, "Offerte voor", rechts);
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(15);
-  doc.setTextColor(...INKT);
-  const titel = doc.splitTextToSize(veilig(b.project.titel.trim() || "Offerte"), W - 2 * M) as string[];
-  doc.text(titel, M, y);
-  y += 6.5 * titel.length - 1;
-  if (b.project.omschrijving.trim()) y = alinea(doc, b.project.omschrijving, y + 1.5, { kleur: [60, 62, 66] });
-  y += 6;
-
-  const regels = offerteRegels(b, u);
-  autoTable(doc, {
-    ...tabelStijl({ 1: { halign: "right", cellWidth: 34 }, 2: { halign: "right", cellWidth: 38 } }),
-    startY: y,
-    head: [["Omschrijving", "Hoeveelheid", "Bedrag excl. btw"]],
-    body: regels.length ? regels.map((r) => [veilig(r.omschrijving), veilig(r.hoeveelheid), veilig(euro(r.bedrag))]) : [["Nog geen posten ingevuld", "", ""]],
-  });
+  y = projectKop(doc, b, y, "Offerte");
+  klantRegels(doc, b, y, u);
   y = totalen(
     doc,
     eindY(doc) + 2,
@@ -258,40 +282,51 @@ export function offertePdf(b: Begroting, { bedrijf, logo }: Opties): { doc: jsPD
     for (const v of voorwaarden) y = alinea(doc, `•  ${v}`, y + 1, { size: 8.8, kleur: [60, 62, 66] });
   }
 
-  // Akkoordverklaring
-  y = ruimte(doc, y + 14, 44);
-  label(doc, "Voor akkoord", M, y);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.8);
-  doc.setTextColor(60, 62, 66);
-  doc.text(veilig(`Door te ondertekenen gaat u akkoord met deze offerte (${b.nummer}) en de voorwaarden.`), M, y + 5.5);
-  const kolom = (x: number, kopje: string, naam: string) => {
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
-    doc.setTextColor(...INKT);
-    doc.text(veilig(kopje), x, y + 14);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.5);
-    doc.setTextColor(...GRIJS);
-    const velden: [string, string][] = [["Naam", naam], ["Datum", ""], ["Handtekening", ""]];
-    velden.forEach(([k, v], i) => {
-      const ly = y + 23 + i * 8.5;
-      doc.text(k, x, ly);
-      doc.setDrawColor(...LIJN);
-      doc.setLineWidth(0.3);
-      doc.line(x + 24, ly + 0.8, x + 80, ly + 0.8);
-      if (v) {
-        doc.setTextColor(...INKT);
-        doc.text(veilig(v), x + 25, ly - 0.2);
-        doc.setTextColor(...GRIJS);
-      }
-    });
-  };
-  kolom(M, "Opdrachtgever", b.klant.naam);
-  kolom(W / 2 + 4, bedrijf.name, "");
-
   voetteksten(doc, bedrijf, `OFFERTE ${b.nummer}`, logo);
   return { doc, naam: bestandsnaam("Offerte", b) };
+}
+
+export function factuurPdf(b: Begroting, { bedrijf, logo }: Opties): { doc: jsPDF; naam: string } {
+  const f = b.factuur;
+  const doc = new jsPDF({ unit: "mm", format: "a4", compress: true });
+  doc.setProperties({ title: `Factuur ${f.nummer}`, author: bedrijf.name, subject: b.project.titel });
+  const u = bereken(b);
+  const fb = factuurBedragen(b, u);
+  kop(doc, "FACTUUR", f.nummer, logo);
+
+  const rechts: [string, string][] = [
+    ["Factuurnummer", f.nummer],
+    ["Factuurdatum", formatDatum(f.datum)],
+    ["Vervaldatum", formatDatum(vervaldatum(b))],
+  ];
+  if (b.nummer.trim()) rechts.push(["Offerte", b.nummer]);
+  if (b.project.adres.trim()) rechts.push(["Werkadres", b.project.adres]);
+  let y = gegevensBlok(doc, b, "Factuur aan", rechts);
+  y = projectKop(doc, b, y, "Factuur");
+  klantRegels(doc, b, y, u);
+
+  const regels: [string, string][] = [];
+  if (fb.deel < 100) {
+    regels.push(["Totaal opdracht excl. btw", euro(u.excl)]);
+    regels.push([`${f.omschrijving.trim() || "Deze factuur"}: ${formatGetal(fb.deel)}%`, euro(fb.excl)]);
+  } else {
+    regels.push([f.omschrijving.trim() ? `${f.omschrijving.trim()} excl. btw` : "Totaal excl. btw", euro(fb.excl)]);
+  }
+  regels.push([`Btw ${formatGetal(b.instellingen.btw)}% over ${euro(fb.excl)}`, euro(fb.btw)]);
+  y = totalen(doc, eindY(doc) + 2, regels, ["Te betalen", euro(fb.incl)]);
+
+  y = ruimte(doc, y + 14, 22);
+  label(doc, "Betaling", M, y);
+  const rekening = bedrijf.iban ? ` op rekening ${bedrijf.iban} ten name van ${bedrijf.name}` : "";
+  y = alinea(
+    doc,
+    `Wij verzoeken u het bedrag van ${euro(fb.incl)} uiterlijk ${formatDatum(vervaldatum(b))} over te maken${rekening}, onder vermelding van factuurnummer ${f.nummer}.`,
+    y + 1,
+    { size: 9, kleur: [60, 62, 66] },
+  );
+
+  voetteksten(doc, bedrijf, `FACTUUR ${f.nummer}`, logo);
+  return { doc, naam: bestandsnaam("Factuur", { ...b, nummer: f.nummer }) };
 }
 
 export function werkbegrotingPdf(b: Begroting, { bedrijf, logo }: Opties): { doc: jsPDF; naam: string } {

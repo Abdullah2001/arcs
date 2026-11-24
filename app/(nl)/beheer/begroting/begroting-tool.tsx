@@ -13,10 +13,12 @@ import {
   legeMateriaalRegel,
   materiaalBedrag,
   materiaalUitProduct,
+  factuurBedragen,
   nieuweBegroting,
   normaliseer,
   offerteRegels,
   STANDAARD,
+  vervaldatum,
   verpakkingen,
   type ArbeidRegel,
   type Begroting,
@@ -161,6 +163,7 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
 
   const u = useMemo(() => bereken(begroting), [begroting]);
   const klantRegels = useMemo(() => offerteRegels(begroting, u), [begroting, u]);
+  const fb = useMemo(() => factuurBedragen(begroting, u), [begroting, u]);
   const groepen = useMemo(() => [...new Set(prijzen.producten.map((p) => p.groep))].filter(Boolean), [prijzen]);
   const winkels = useMemo(() => [...new Set(prijzen.producten.map((p) => p.winkel))].filter(Boolean).sort(), [prijzen]);
   const resultaten = useMemo(() => zoek(prijzen.producten, term, groep, winkel), [prijzen, term, groep, winkel]);
@@ -169,6 +172,7 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
   const zet = (f: (x: Begroting) => Begroting) => setBegroting((x) => f(x));
   const zetKlant = (k: keyof Begroting["klant"], v: string) => zet((x) => ({ ...x, klant: { ...x.klant, [k]: v } }));
   const zetProject = (k: keyof Begroting["project"], v: string) => zet((x) => ({ ...x, project: { ...x.project, [k]: v } }));
+  const zetFactuur = <K extends keyof Begroting["factuur"]>(k: K, v: Begroting["factuur"][K]) => zet((x) => ({ ...x, factuur: { ...x.factuur, [k]: v } }));
   const zetInstelling = (k: keyof Begroting["instellingen"], v: number) => zet((x) => ({ ...x, instellingen: { ...x.instellingen, [k]: v } }));
   const zetMateriaal = (id: string, wijziging: Partial<MateriaalRegel>) =>
     zet((x) => ({ ...x, materialen: x.materialen.map((r) => (r.id === id ? { ...r, ...wijziging } : r)) }));
@@ -239,15 +243,15 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
 
   function kopie() {
     const n = nieuweBegroting();
-    setBegroting({ ...begroting, id: n.id, nummer: n.nummer, datum: n.datum, bijgewerkt: n.bijgewerkt });
+    setBegroting({ ...begroting, id: n.id, nummer: n.nummer, datum: n.datum, factuur: n.factuur, bijgewerkt: n.bijgewerkt });
     setOpgeslagen(null);
     setMelding({ text: "Kopie gemaakt met een nieuw nummer. Sla hem op om hem te bewaren.", ok: true });
   }
 
-  const pdf = (soort: "offerte" | "werkbegroting") =>
+  const pdf = (soort: "offerte" | "factuur" | "werkbegroting") =>
     actie(soort, async () => {
-      const [{ offertePdf, werkbegrotingPdf }, logo] = await Promise.all([import("@/lib/begroting/pdf"), naarDataUrl(logoUrl)]);
-      const maak = soort === "offerte" ? offertePdf : werkbegrotingPdf;
+      const [{ offertePdf, factuurPdf, werkbegrotingPdf }, logo] = await Promise.all([import("@/lib/begroting/pdf"), naarDataUrl(logoUrl)]);
+      const maak = soort === "offerte" ? offertePdf : soort === "factuur" ? factuurPdf : werkbegrotingPdf;
       const { doc, naam } = maak(begroting, { bedrijf, logo });
       // In de testversie (een pagina binnen Claude) mag een pagina zelf niets downloaden;
       // daar loopt het via de downloadfunctie van Claude. Op de website gewoon downloaden.
@@ -290,7 +294,7 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
           <h1>Begroting en offerte</h1>
           <p>
             Maak eerst de werkbegroting met materialen en arbeid. Risico, winst en btw worden automatisch berekend. Daarna download je de
-            offerte voor de klant als PDF.
+            offerte voor de klant als PDF, en later de factuur.
           </p>
         </div>
         <div className={b.knoppen}>
@@ -644,6 +648,44 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
             </Veld>
           </section>
 
+          <section className={s.panel} aria-labelledby="factuur">
+            <h2 id="factuur">Factuur</h2>
+            <p className={s.panelHint}>
+              De factuur gebruikt dezelfde posten als de offerte. Vraag je een deel van het bedrag, bijvoorbeeld een aanbetaling van 30%, vul dat
+              percentage dan in. Elk factuurnummer moet uniek zijn en mag maar één keer gebruikt worden.
+            </p>
+            <div className={b.velden}>
+              <Veld label="Factuurnummer">
+                <input value={begroting.factuur.nummer} onChange={(e) => zetFactuur("nummer", e.target.value)} />
+              </Veld>
+              <Veld label="Factuurdatum">
+                <input type="date" value={begroting.factuur.datum} onChange={(e) => zetFactuur("datum", e.target.value)} />
+              </Veld>
+              <Veld label={`Betalen binnen (dagen) · uiterlijk ${formatDatum(vervaldatum(begroting))}`}>
+                <Getal label="Betaaltermijn in dagen" value={begroting.factuur.betaaldagen} onChange={(v) => zetFactuur("betaaldagen", Math.round(v))} />
+              </Veld>
+            </div>
+            <div className={b.velden}>
+              <Veld label="Omschrijving (optioneel)" wide>
+                <input value={begroting.factuur.omschrijving} onChange={(e) => zetFactuur("omschrijving", e.target.value)} placeholder="Bijvoorbeeld: Aanbetaling of Eindfactuur" />
+              </Veld>
+              <Veld label="Deel van de offerte">
+                <Getal label="Deel van de offerte in procenten" value={begroting.factuur.deel} onChange={(v) => zetFactuur("deel", Math.min(100, v))} suffix="%" />
+              </Veld>
+            </div>
+            <dl className={b.lijst}>
+              {fb.deel < 100 && <div><dt>Totaal opdracht excl. btw</dt><dd>{euro(u.excl)}</dd></div>}
+              <div><dt>Factuur excl. btw{fb.deel < 100 ? ` (${formatGetal(fb.deel)}%)` : ""}</dt><dd>{euro(fb.excl)}</dd></div>
+              <div><dt>Btw {formatGetal(begroting.instellingen.btw)}%</dt><dd>{euro(fb.btw)}</dd></div>
+              <div className={b.totaal}><dt>Te betalen</dt><dd>{euro(fb.incl)}</dd></div>
+            </dl>
+            <div className={s.actions}>
+              <button type="button" className={s.primary} onClick={() => pdf("factuur")} disabled={bezig === "factuur"}>
+                {bezig === "factuur" ? "PDF maken…" : "Factuur downloaden (PDF)"}
+              </button>
+            </div>
+          </section>
+
           <section className={s.panel} aria-labelledby="prijzen">
             <h2 id="prijzen">Prijzendatabase</h2>
             <p className={s.panelHint}>
@@ -699,6 +741,9 @@ function Werkblad({ prijzen: beginPrijzen, bedrijf, modus, logoUrl = "/images/br
             <div className={b.pdfKnoppen}>
               <button type="button" className={s.primary} onClick={() => pdf("offerte")} disabled={bezig === "offerte"}>
                 {bezig === "offerte" ? "PDF maken…" : "Offerte downloaden (PDF)"}
+              </button>
+              <button type="button" className={s.secondary} onClick={() => pdf("factuur")} disabled={bezig === "factuur"}>
+                {bezig === "factuur" ? "PDF maken…" : "Factuur downloaden (PDF)"}
               </button>
               <button type="button" className={s.secondary} onClick={() => pdf("werkbegroting")} disabled={bezig === "werkbegroting"}>
                 {bezig === "werkbegroting" ? "PDF maken…" : "Werkbegroting downloaden (PDF)"}

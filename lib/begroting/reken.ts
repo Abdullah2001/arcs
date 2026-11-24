@@ -71,7 +71,19 @@ export type Begroting = {
   /** Percentages, bijvoorbeeld 21 voor 21%. */
   instellingen: { btw: number; risico: number; winst: number };
   offerte: { indeling: Indeling; voorwaarden: string };
+  factuur: Factuur;
   bijgewerkt: string;
+};
+
+export type Factuur = {
+  nummer: string;
+  datum: string;
+  /** Betaaltermijn in dagen na de factuurdatum. */
+  betaaldagen: number;
+  /** Deel van het offertebedrag dat deze factuur vraagt, in procenten (100 = alles). */
+  deel: number;
+  /** Bijvoorbeeld "Aanbetaling" of "Eindfactuur". Komt boven de bedragen. */
+  omschrijving: string;
 };
 
 export type Samenvatting = {
@@ -83,7 +95,7 @@ export type Samenvatting = {
   bijgewerkt: string;
 };
 
-export const STANDAARD = { btw: 21, risico: 5, winst: 10, uurtarief: 45, geldigDagen: 30 };
+export const STANDAARD = { btw: 21, risico: 5, winst: 10, uurtarief: 45, geldigDagen: 30, betaaldagen: 14 };
 
 export const STANDAARD_VOORWAARDEN = [
   "Deze offerte is geldig tot de genoemde datum.",
@@ -96,6 +108,9 @@ export const nieuwId = () =>
   typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
 const vandaag = () => new Date().toISOString().slice(0, 10);
+
+/** Voorstel voor een factuurnummer bij een offertenummer: OF-20261124-2115 wordt F-20261124-2115. */
+export const factuurNummer = (offerte: string) => (/^OF-/i.test(offerte) ? `F-${offerte.slice(3)}` : `F-${offerte}`);
 
 export function nieuweBegroting(): Begroting {
   const d = new Date();
@@ -111,6 +126,7 @@ export function nieuweBegroting(): Begroting {
     arbeid: [],
     instellingen: { btw: STANDAARD.btw, risico: STANDAARD.risico, winst: STANDAARD.winst },
     offerte: { indeling: "groepen", voorwaarden: STANDAARD_VOORWAARDEN },
+    factuur: { nummer: factuurNummer(nummer), datum: vandaag(), betaaldagen: STANDAARD.betaaldagen, deel: 100, omschrijving: "" },
     bijgewerkt: new Date().toISOString(),
   };
 }
@@ -247,6 +263,22 @@ export function geldigTot(b: Begroting): string {
   return d.toISOString().slice(0, 10);
 }
 
+export function vervaldatum(b: Begroting): string {
+  const d = new Date(`${b.factuur.datum || vandaag()}T12:00:00`);
+  d.setDate(d.getDate() + Math.max(0, n(b.factuur.betaaldagen)));
+  return d.toISOString().slice(0, 10);
+}
+
+export type FactuurBedragen = { deel: number; excl: number; btw: number; incl: number };
+
+/** Bedragen van de factuur: het gekozen deel van het offertebedrag excl. btw, met btw daarover. */
+export function factuurBedragen(b: Begroting, u = bereken(b)): FactuurBedragen {
+  const deel = Math.min(100, Math.max(0, n(b.factuur.deel)));
+  const excl = deel === 100 ? u.excl : rond((u.excl * deel) / 100);
+  const btw = rond((excl * n(b.instellingen.btw)) / 100);
+  return { deel, excl, btw, incl: rond(excl + btw) };
+}
+
 export const samenvatting = (b: Begroting): Samenvatting => ({
   id: b.id,
   nummer: b.nummer,
@@ -279,5 +311,6 @@ export function normaliseer(input: unknown): Begroting | null {
     project: { ...basis.project, ...(x.project ?? {}) },
     instellingen: { ...basis.instellingen, ...(x.instellingen ?? {}) },
     offerte: { ...basis.offerte, ...(x.offerte ?? {}) },
+    factuur: { ...basis.factuur, nummer: factuurNummer(typeof x.nummer === "string" ? x.nummer : basis.nummer), ...(x.factuur ?? {}) },
   } as Begroting;
 }

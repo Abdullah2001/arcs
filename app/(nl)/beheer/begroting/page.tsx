@@ -14,7 +14,8 @@ export default async function BegrotingPage() {
   const admin = await requireAdmin();
   if (admin.mustChangePassword) redirect("/beheer/account");
   const prijzen = await laadPrijzen();
-  const bedrijf = { name: company.name, phoneDisplay: company.phoneDisplay, email: company.email, kvk: company.kvk, btw: company.btw };
+  const { name, phoneDisplay, email, kvk, btw, adres, postcode, plaats, iban } = company;
+  const bedrijf = { name, phoneDisplay, email, kvk, btw, adres, postcode, plaats, iban };
 
   return (
     <div className={s.page}>
