@@ -1,5 +1,4 @@
 // Bedrijfsgegevens op één plek. De hele website (NL en EN) leest hieruit.
-// TIJDELIJK: het e-mailadres is nog een voorbeeldwaarde.
 export const company = {
   name: "AR Civil Solutions",
   phoneDisplay: "06 40 15 83 08",
@@ -12,7 +11,7 @@ export const company = {
   adres: "Cavallilaan 265",
   postcode: "5654 BE",
   plaats: "Eindhoven",
-  iban: "", // rekeningnummer voor facturen; wordt pas getoond als het is ingevuld
+  iban: "NL50 KNAB 0800 4500 86", // rekeningnummer voor facturen
   region: ["Eindhoven", "Veldhoven", "Helmond", "Best", "Son en Breugel", "Nuenen", "Geldrop", "Waalre"],
 };
 
